@@ -1,0 +1,4 @@
+-Plot
+-Circ runtime
+-JSON circuit definition
+-JSON circuit loader to run circuits described in JSON.
