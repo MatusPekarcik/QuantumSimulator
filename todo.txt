@@ -1,4 +1,74 @@
--Plot
--Circ runtime
--JSON circuit definition
--JSON circuit loader to run circuits described in JSON.
+
+-expectation values <X>, <Y>, <Z> for a single qubit. (Potrebne na Bloch vector pomocou ktoreho nakreslim Bloch sphere)
+-pauli-string expectation values (kvoli witnessom)
+-entanglement witnesses
+    └── Linear witnesses (Pauli-based)
+        ├── Bell witnesses (2 qubits)
+        ├── Werner witnesses (noise-robust)
+        ├── GHZ witnesses (multipartite)
+        ├── Hamiltonian witnesses
+        └── User-defined / learned witnesses
+
+
+-- noise models (Quantum channels - Qiskit Cirq - backend) / (dalsie presety urobime vo frontende backend ma iba channels)
+-- density-matrix support 
+                └── Pure simulation → statevector
+                └── Noisy simulation → density matrix
+
+-- benchmark s quiskit
+-- Urobit to rychlejsie ?
+Measurement on subset of qubits  ..pred alebo po reacte ?
+-- wohoo react
+
+
+test json : 
+--Prepare a Bell state
+--Rotate qubit 0
+--Add entanglement
+--Measure correlations
+--Evaluate a witness
+--Add light depolarizing noise
+
+{
+  "n_qubits": 2,
+  "gates": [
+    { "name": "H", "targets": [0] },
+    { "name": "CNOT", "control": 0, "target": 1 },
+
+    { "name": "RZ", "target": 0, "theta": 0.78539816339 },
+    { "name": "RY", "target": 1, "theta": 1.0471975512 },
+
+    { "name": "CZ", "control": 0, "target": 1 }
+  ],
+
+  "observables": [
+    { "pauli": "ZZ", "qubits": [0, 1] },
+    { "pauli": "XX", "qubits": [0, 1] },
+    { "pauli": "ZI", "qubits": [0, 1] },
+    { "pauli": "IZ", "qubits": [0, 1] }
+  ],
+
+  "witnesses": [
+    {
+      "name": "General Bell-like witness",
+      "terms": [
+        { "pauli": "XX", "qubits": [0, 1], "coef": 1.0 },
+        { "pauli": "ZZ", "qubits": [0, 1], "coef": 1.0 }
+      ],
+      "bound": 1.0,
+      "violates_if": ">"
+    }
+  ],
+
+  "noise_model": {
+    "channels": [
+      { "after": "each_gate", "type": "depolarizing", "p": 0.03 }
+    ]
+  },
+
+  "shots": 4000
+}
+
+
+HPC Perun skusit 
+WQE 
